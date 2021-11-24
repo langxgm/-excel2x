@@ -10,6 +10,9 @@
 ### excel
 ![image](https://github.com/langxgm/excel2x/blob/master/image/hero.xlsx.png)
 
+### json
+![image](https://github.com/langxgm/excel2x/blob/master/image/hero.json.png)
+
 ### toml
 ![image](https://github.com/langxgm/excel2x/blob/master/image/hero.toml.png)
 

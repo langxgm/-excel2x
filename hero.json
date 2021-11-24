@@ -1,0 +1,26 @@
+[
+    {
+        "ID": 1,
+        "Name": "Mage",
+        "HP": 150,
+        "Attack": 30,
+        "Defence": 1,
+        "Aptitude": 3.3
+    },
+    {
+        "ID": 2,
+        "Name": "Warlock",
+        "HP": 200,
+        "Attack": 20,
+        "Defence": 2,
+        "Aptitude": 2.2
+    },
+    {
+        "ID": 3,
+        "Name": "Warrior",
+        "HP": 300,
+        "Attack": 25,
+        "Defence": 3,
+        "Aptitude": 2.75
+    }
+]
