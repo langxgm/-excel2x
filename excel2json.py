@@ -6,6 +6,7 @@ import getopt
 import xlrd
 import pytablewriter
 
+
 def create_file(name, rows, header, is_print):
     # remove old file
     if os.path.exists(name):
@@ -44,6 +45,14 @@ def create_file(name, rows, header, is_print):
     # out json
     writer = pytablewriter.JsonTableWriter()
     writer.headers = fields
+    # set type_hints
+    for n in range(column_num):
+        if types[n] == "STRING":
+            writer.type_hints.append(pytablewriter.typehint.String)
+        elif types[n] == "INT":
+            writer.type_hints.append(pytablewriter.typehint.Integer)
+        elif types[n] == "FLOAT":
+            writer.type_hints.append(pytablewriter.typehint.RealNumber)
     try:
         for r in range(row_num):
             row_data = rows[r]

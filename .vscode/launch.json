@@ -16,7 +16,8 @@
                 "-e", ".toml",
                 "--header", "3",
                 "--cellname-ext", ".list"
-            ]
+            ],
+            "justMyCode": false
         }
     ]
 }
