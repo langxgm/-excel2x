@@ -15,7 +15,7 @@
                 "-o", ".",
                 "-e", ".toml",
                 "--header", "3",
-                "--cellname-ext", ".list"
+                "--lowercase", "1"
             ],
             "justMyCode": false
         }

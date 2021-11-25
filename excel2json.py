@@ -7,7 +7,7 @@ import xlrd
 import pytablewriter
 
 
-def create_file(name, rows, header, is_print):
+def create_file(name, rows, header, lowercase, is_print):
     # remove old file
     if os.path.exists(name):
         os.remove(name)
@@ -44,7 +44,9 @@ def create_file(name, rows, header, is_print):
             return
     # out json
     writer = pytablewriter.JsonTableWriter()
-    writer.headers = fields
+    # set headers
+    for f in fields:
+        writer.headers.append(f.lower() if lowercase else f)
     # set type_hints
     for n in range(column_num):
         if types[n] == "STRING":
@@ -108,6 +110,7 @@ def help():
         -o, --output-dir        output file directory
         -e, --filename-ext      filename extension, default is \".toml\"
         --header                table header, default is 3
+        --lowercase             field name lowercase, default is 1
     """)
 
 
@@ -121,9 +124,10 @@ def main(argv=None):
         output_dir = "."
         filename_ext = ".json"
         header = 3
+        lowercase = 1
         try:
             opts, args = getopt.getopt(argv[1:], "hi:o:e:", [
-                                       "help", "input-dir=", "output-dir=", "filename-ext=", "header="])
+                                       "help", "input-dir=", "output-dir=", "filename-ext=", "header=", "lowercase="])
             for opt_name, opt_value in opts:
                 if opt_name in ("-h", "--help"):
                     help()
@@ -136,6 +140,8 @@ def main(argv=None):
                     filename_ext = opt_value
                 elif opt_name == "--header":
                     header = int(opt_value)
+                elif opt_name == "--lowercase":
+                    lowercase = int(opt_value)
         except getopt.error as msg:
             raise Usage(msg)
 
@@ -143,11 +149,11 @@ def main(argv=None):
             # excel
             if name.endswith(".xlsx") or name.endswith(".xlsm"):
                 table = xlrd.open_workbook(input_dir + "/" + name)
-                #print("table: ", name)
+                # print("table: ", name)
                 # sheet
                 sheet_num = len(table.sheets())
                 for sheet in table.sheets():
-                    #print("sheet: ", sheet.name)
+                    # print("sheet: ", sheet.name)
                     count += 1
                     # row count
                     nrows = sheet.nrows
@@ -165,8 +171,8 @@ def main(argv=None):
                     if sheet.name.startswith("Sheet") == False:
                         file_name = sheet.name
                     create_file(output_dir + "/" + file_name +
-                                filename_ext, rows, header, False)
-                    #print("[%d] table: %s, sheet: %s, nrows: %d, ok." % (count, name, sheet.name, nrows))
+                                filename_ext, rows, header, lowercase, False)
+                    # print("[%d] table: %s, sheet: %s, nrows: %d, ok." % (count, name, sheet.name, nrows))
     except Usage as err:
         print(err.msg)
         help()

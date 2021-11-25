@@ -7,7 +7,7 @@ import xlrd
 import pytablewriter
 
 
-def create_file(name, rows, header, objectname, cellname, is_print):
+def create_file(name, rows, header, lowercase, objectname, cellname, is_print):
     # remove old file
     if os.path.exists(name):
         os.remove(name)
@@ -45,7 +45,9 @@ def create_file(name, rows, header, objectname, cellname, is_print):
     # out toml
     writer = pytablewriter.TomlTableWriter()
     writer.table_name = cellname
-    writer.headers = fields
+    # set headers
+    for f in fields:
+        writer.headers.append(f.lower() if lowercase else f)
     # set type_hints
     for n in range(column_num):
         if types[n] == "STRING":
@@ -117,6 +119,7 @@ def help():
         -o, --output-dir        output file directory
         -e, --filename-ext      filename extension, default is \".toml\"
         --header                table header, default is 3
+        --lowercase             field name lowercase, default is 1
         --cellname-ext          cellname extension, default is \".list\"
     """)
 
@@ -131,10 +134,11 @@ def main(argv=None):
         output_dir = "."
         filename_ext = ".toml"
         header = 3
+        lowercase = 1
         cellname_ext = ".list"
         try:
             opts, args = getopt.getopt(argv[1:], "hi:o:e:", [
-                                       "help", "input-dir=", "output-dir=", "filename-ext=", "header=", "cellname-ext="])
+                                       "help", "input-dir=", "output-dir=", "filename-ext=", "header=", "lowercase=", "cellname-ext="])
             for opt_name, opt_value in opts:
                 if opt_name in ("-h", "--help"):
                     help()
@@ -147,6 +151,8 @@ def main(argv=None):
                     filename_ext = opt_value
                 elif opt_name == "--header":
                     header = int(opt_value)
+                elif opt_name == "--lowercase":
+                    lowercase = int(opt_value)
                 elif opt_name == "--cellname-ext":
                     cellname_ext = opt_value
         except getopt.error as msg:
@@ -156,11 +162,11 @@ def main(argv=None):
             # excel
             if name.endswith(".xlsx") or name.endswith(".xlsm"):
                 table = xlrd.open_workbook(input_dir + "/" + name)
-                #print("table: ", name)
+                # print("table: ", name)
                 # sheet
                 sheet_num = len(table.sheets())
                 for sheet in table.sheets():
-                    #print("sheet: ", sheet.name)
+                    # print("sheet: ", sheet.name)
                     count += 1
                     # row count
                     nrows = sheet.nrows
@@ -183,8 +189,8 @@ def main(argv=None):
                     if objectname.find("_") != -1:
                         objectname = objectname.replace("_", "")
                     create_file(output_dir + "/" + file_name +
-                                filename_ext, rows, header, objectname, objectname + cellname_ext, False)
-                    #print("[%d] table: %s, sheet: %s, nrows: %d, ok." % (count, name, sheet.name, nrows))
+                                filename_ext, rows, header, lowercase, objectname, objectname + cellname_ext, False)
+                    # print("[%d] table: %s, sheet: %s, nrows: %d, ok." % (count, name, sheet.name, nrows))
     except Usage as err:
         print(err.msg)
         help()

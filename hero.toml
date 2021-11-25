@@ -1,25 +1,25 @@
 [Hero]
 [[Hero.list]]
-ID = 1
-Name = "Mage"
-HP = 150
-Attack = 30
-Defence = 1
-Aptitude = 3.3
+id = 1
+name = "Mage"
+hp = 150
+attack = 30
+defence = 1
+aptitude = 3.3
 
 [[Hero.list]]
-ID = 2
-Name = "Warlock"
-HP = 200
-Attack = 20
-Defence = 2
-Aptitude = 2.2
+id = 2
+name = "Warlock"
+hp = 200
+attack = 20
+defence = 2
+aptitude = 2.2
 
 [[Hero.list]]
-ID = 3
-Name = "Warrior"
-HP = 300
-Attack = 25
-Defence = 3
-Aptitude = 2.75
+id = 3
+name = "Warrior"
+hp = 300
+attack = 25
+defence = 3
+aptitude = 2.75
 
