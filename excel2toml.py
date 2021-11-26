@@ -1,10 +1,14 @@
 #! /usr/bin/python3
 
 import os
+import re
 import sys
 import getopt
 import xlrd
 import pytablewriter
+
+
+REGEXP_FIRST_UPPERCASE = re.compile(r"^[A-Z]+[a-zA-Z0-9]*$")
 
 
 def create_file(name, rows, header, lowercase, objectname, cellname, is_print):
@@ -184,7 +188,7 @@ def main(argv=None):
                     if sheet.name.startswith("Sheet") == False:
                         file_name = sheet.name
                     objectname = file_name
-                    if objectname.istitle() == False:
+                    if objectname.istitle() == False and REGEXP_FIRST_UPPERCASE.search(objectname) is None:
                         objectname = objectname.title()
                     if objectname.find("_") != -1:
                         objectname = objectname.replace("_", "")
